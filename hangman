@@ -1,0 +1,114 @@
+#Step 1 
+import random
+word_list = ["aardvark", "baboon", "camel"]
+
+#TODO-1 - Randomly choose a word from the word_list and assign it to a variable called chosen_word.
+
+#TODO-2 - Ask the user to guess a letter and assign their answer to a variable called guess. Make guess lowercase.
+
+#TODO-3 - Check if the letter the user guessed (guess) is one of the letters in the chosen_word.
+
+stages = ['''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+ /    |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========''', '''
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+''', '''
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+''']
+
+lives = 6
+chosen_word = random.choice(word_list)
+
+print(chosen_word)  #just for testing
+hidden_word = []
+
+#let's show how many characters will the word have
+for i in range(0, len(chosen_word)):
+  hidden_word.append("_ ")
+print("".join(hidden_word))
+
+exist = False #a variable which becomes true if the guess letter is part of the word
+already_exist = False  #if the the letter has been guessed before
+
+#the main loop has 2 conditions: 
+#1. The hidden word has still unfilled characters.
+#2. There are still lives left
+while hidden_word.count("_ ") > 0 and lives > 0:
+  
+  guess = input("Guess a letter: ").lower()
+
+  #checking if the guess has been already guessed
+  for char in hidden_word:
+    if char == guess + " ":
+      already_exist = True
+  
+  i = 0 #word index will increase by one each step inside the "for" loop that checks for character match
+  for char in chosen_word:
+    if char == guess:
+      hidden_word[i] = guess + " "
+      exist = True    
+    i += 1
+
+  if already_exist:
+    print("You already guessed this letter. Guess another one!")
+    already_exist = False  #variable reset
+  if not exist:
+    print(stages[lives])
+    lives -= 1
+  exist = False  #variable reset
+  print("".join(hidden_word))
+
+if lives > 0:
+  print("You win!")
+else:
+  print("You loose!")
+  print(stages[lives])
